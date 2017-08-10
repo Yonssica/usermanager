@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+    <!--Spring构建SqlSessionFactory-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--指定Mybatis的数据源-->
+        <property name="dataSource" ref="dataSource"/>
+        <!--指定Mybatis的全局配置文件-->
+        <property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>
+        <!--扫描Mappers目录以及子目录下的所有xml文件-->
+        <property name="mapperLocations" value="classpath:mybatis/mappers/**/*.xml"/>
+        <!--开启别名扫描-->
+        <property name="typeAliasesPackage" value="cn.itcast.usermanager.pojo"/>
+    </bean>
+
+    <!--Mapper接口的包扫描-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="cn.itcast.usermanager.mapper"/>
+    </bean>
+</beans>
