@@ -82,7 +82,7 @@ public class UserController {
 
     @RequestMapping("delete")
     @ResponseBody
-    public Map<String, Object> deleteUser(@RequestParam("ids") String[] ids) {
+    public Map<String, Object> deleteUser(@RequestParam("ids") List<Object> ids) {
         Map<String, Object> map = new HashMap<>();
         try {
             // 调用UserService的新增用户方法

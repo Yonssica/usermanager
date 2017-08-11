@@ -1,9 +1,10 @@
 package cn.itcast.usermanager.service.impl;
 
-import cn.itcast.usermanager.mapper.UserMapper;
+import cn.itcast.usermanager.mapper.NewUserMapper;
 import cn.itcast.usermanager.pojo.EasyUIResult;
 import cn.itcast.usermanager.pojo.User;
 import cn.itcast.usermanager.service.UserService;
+import com.github.abel533.entity.Example;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +21,14 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private UserMapper userMapper;
+    private NewUserMapper userMapper;
 
     @Override
     public EasyUIResult queryEasyUIResult(Integer pageNum, Integer pageSize) {
         // 在查询方法调用之前，调用分页插件的静态代码，中间最好不要隔任何代码
         PageHelper.startPage(pageNum, pageSize);
-        List<User> list = this.userMapper.queryUsersAll();
+        User record = new User();
+        List<User> list = this.userMapper.select(record);
         // 初始化pageInfo对象，所有分页参数都可以在该对象中获取
         PageInfo<User> pageInfo = new PageInfo<User>(list);
 
@@ -38,15 +40,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addUsers(User user1, User user2) {
-        this.userMapper.addUser(user1);
+        this.userMapper.insert(user1);
         // 制造异常
         //  int i = 1/0;
-        this.userMapper.addUser(user2);
+        this.userMapper.insert(user2);
     }
 
     @Override
     public Boolean addUser(User user) {
-        int count = this.userMapper.addUser(user);
+        int count = this.userMapper.insertSelective(user);
         if (count > 0) {
             return true;
         }
@@ -54,8 +56,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean deleteUser(String[] ids) {
-        int index = this.userMapper.deleteUser(ids);
+    public Boolean deleteUser(List<Object> ids) {
+        Example example = new Example(User.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andIn("id", ids);
+        int index = this.userMapper.deleteByExample(example);
         if (index > 0) {
             return true;
         }
@@ -64,10 +69,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean editUser(User user) {
-        int count = this.userMapper.editUser(user);
+        int count = this.userMapper.updateByPrimaryKey(user);
         if (count > 0) {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public User queryUserById(Long id) {
+        return this.userMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public void deleteUserById(Long id) {
+        this.userMapper.deleteByPrimaryKey(id);
     }
 }

@@ -50,8 +50,8 @@
             $.messager.alert('提示', '表单还未填写完成!');
             return;
         }
-        $.post("/user/save", $("#add").serialize(), function (data) {
-            if (data.status == 200) {
+        $.post("/rest/user", $("#add").serialize(), function (data,status,xhr) {
+            if (xhr.status == 201) {
                 $.messager.alert('提示', '新增会员成功!');
                 $('#userAdd').window('close');
                 $("#userList").datagrid("reload");

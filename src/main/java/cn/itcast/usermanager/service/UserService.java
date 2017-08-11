@@ -3,6 +3,8 @@ package cn.itcast.usermanager.service;
 import cn.itcast.usermanager.pojo.EasyUIResult;
 import cn.itcast.usermanager.pojo.User;
 
+import java.util.List;
+
 /**
  * Created by hwd on 2017/8/8.
  */
@@ -27,7 +29,11 @@ public interface UserService {
 
     Boolean addUser(User user);
 
-    Boolean deleteUser(String[] ids);
+    Boolean deleteUser(List<Object> ids);
 
     Boolean editUser(User user);
+
+    User queryUserById(Long id);
+
+    void deleteUserById(Long id);
 }

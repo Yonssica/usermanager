@@ -32,6 +32,7 @@
                 <td>出生日期:</td>
                 <td>
                     <input class="easyui-datebox" type="text" name="birthday" data-options="required:true"/>
+                    <input type="hidden" name="_method" value="PUT">
                 </td>
             </tr>
         </table>
@@ -47,8 +48,8 @@
             $.messager.alert('提示', '表单还未填写完成!');
             return;
         }
-        $.post("/user/edit", $("#edit").serialize(), function (data) {
-            if (data.status == 200) {
+        $.post("/rest/user", $("#edit").serialize(), function (data,status,xhr) {
+            if (xhr.status == 204) {
                 $.messager.alert('提示', '编辑会员成功!');
                 $('#userEdit').window('close');
                 $("#userList").datagrid("reload");

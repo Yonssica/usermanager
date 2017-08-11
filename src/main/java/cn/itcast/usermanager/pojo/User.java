@@ -3,12 +3,16 @@ package cn.itcast.usermanager.pojo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
+@Table(name = "tb_user")
 public class User {
 
     @Id
+    @GeneratedValue(generator = "JDBC")
     private Long id;
 
     // 用户名
